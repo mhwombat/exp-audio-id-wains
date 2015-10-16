@@ -1,0 +1,312 @@
+name:                exp-audio-id-wains
+version:             2.15
+synopsis:            ALife agent that maps images to numerals.
+description:         ALife agent that maps images to numerals.
+homepage:            https://github.com/mhwombat/exp-audio-id-wains
+license:             BSD3
+license-file:        LICENSE
+author:              Amy de Buitléir
+maintainer:          amy@nualeargais.ie
+copyright:           (c) Amy de Buitléir 2013-2015
+category:            Data
+build-type:          Simple
+cabal-version:       >=1.8
+
+source-repository head
+  type:     git
+  location: https://github.com/mhwombat/numeral-wains.git
+
+source-repository this
+  type:     git
+  location: https://github.com/mhwombat/numeral-wains.git
+  tag:      2.15
+
+executable exp-audio-id-wains-daemon
+  main-is:          ALife/Creatur/Wain/AudioID/Daemon.hs
+  ghc-options:      -Wall -Werror -O2 -rtsopts -threaded
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    hdaemonize ==0.5.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    text ==1.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src
+
+executable exp-audio-id-wains-init
+  main-is:          ALife/Creatur/Wain/AudioID/GeneratePopulation.hs
+  ghc-options:      -Wall -Werror -O2 -rtsopts -threaded
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    cond ==0.4.*,
+                    colour ==2.3.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src
+
+executable exp-audio-id-wains-examine
+  main-is:          ALife/Creatur/Wain/AudioID/ExamineAgent.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src
+
+Test-suite exp-audio-id-wains-tests
+  Type:             exitcode-stdio-1.0
+  Main-is:          Main.hs
+  GHC-Options:      -Wall -fno-warn-orphans
+  Hs-source-dirs:   test, src
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    creatur-wains-test-utils ==0.1.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    test-framework ==0.8.*,
+                    test-framework-hunit ==0.3.*,
+                    test-framework-quickcheck2 ==0.3.*,
+                    transformers ==0.4.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    QuickCheck ==2.8.*
+  Other-modules:    ALife.Creatur.Wain.AudioID.ActionQC
+
+executable exp-audio-id-wains-learning-test
+  main-is:          LearningTest.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src, test
+
+executable exp-audio-id-wains-teaching-test
+  main-is:          TeachingTest.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src, test
+
+executable exp-audio-id-wains-ronan-test
+  main-is:          RonanTest.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src, test
+
+executable exp-audio-id-big-test
+  main-is:          BigTest.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    app-settings ==0.2.* && >=0.2.0.5,
+                    array ==0.5.*,
+                    base >=4.8 && <5,
+                    base64-bytestring ==1.0.*,
+                    bytestring ==0.10.*,
+                    cereal ==0.4.*,
+                    colour ==2.3.*,
+                    cond ==0.4.*,
+                    containers ==0.5.*,
+                    creatur ==5.9.*,
+                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==7.11.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*,
+                    JuicyPixels ==3.2.*,
+                    lens ==4.12.*,
+                    MonadRandom ==0.4.*,
+                    mtl ==2.2.*,
+                    old-locale ==1.0.*,
+                    random ==1.1.*,
+                    som ==8.2.*,
+                    split ==0.2.*,
+                    time ==1.5.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
+                    utf8-string ==1.*,
+                    vector ==0.10.*,
+                    zlib ==0.6.*
+  hs-source-dirs:   src, test
+
+executable exp-audio-id-diff-analysis
+  main-is:          DiffAnalysis.hs
+  ghc-options:      -Wall -Werror
+  build-depends:
+                    base >=4.8 && <5,
+                    creatur ==5.9.*,
+                    creatur-wains ==7.11.*,
+                    creatur-audio-wains ==1.1.*,
+                    MonadRandom ==0.4.*,
+                    directory ==1.2.*,
+                    filepath ==1.4.*
+  hs-source-dirs:   src, test
