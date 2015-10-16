@@ -284,7 +284,7 @@ cCheckpoints = requiredSetting "checkpoints"
 
 loadUniverse :: IO (Universe a)
 loadUniverse = do
-  configFile <- Path <$> makeRelativeToCurrentDirectory "iomha.config"
+  configFile <- Path <$> makeRelativeToCurrentDirectory "wain.config"
   readResult <- try $ readSettings configFile
   case readResult of
     Right (_, GetSetting getSetting) ->
