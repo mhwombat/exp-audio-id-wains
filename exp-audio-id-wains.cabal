@@ -1,5 +1,5 @@
 name:                exp-audio-id-wains
-version:             2.15
+version:             2.16
 synopsis:            ALife agent that maps images to numerals.
 description:         ALife agent that maps images to numerals.
 homepage:            https://github.com/mhwombat/exp-audio-id-wains
@@ -19,7 +19,7 @@ source-repository head
 source-repository this
   type:     git
   location: https://github.com/mhwombat/numeral-wains.git
-  tag:      2.15
+  tag:      2.16
 
 executable exp-audio-id-wains-daemon
   main-is:          ALife/Creatur/Wain/AudioID/Daemon.hs
