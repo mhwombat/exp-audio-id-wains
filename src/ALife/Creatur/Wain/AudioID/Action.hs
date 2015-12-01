@@ -16,7 +16,8 @@ module ALife.Creatur.Wain.AudioID.Action
     Action(..),
     correct,
     correctActions,
-    numActions
+    numActions,
+    numeralFor
   ) where
 
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic)
@@ -60,3 +61,17 @@ correctActions = [ Identify_0, Identify_1, Identify_2, Identify_3,
                    Identify_8, Identify_9, Flirt ]
 numActions :: Int
 numActions = 1 + fromEnum (maxBound :: Action)
+
+numeralFor :: Action -> Char
+numeralFor Flirt = 'X'
+numeralFor Identify_0 = '0'
+numeralFor Identify_1 = '1'
+numeralFor Identify_2 = '2'
+numeralFor Identify_3 = '3'
+numeralFor Identify_4 = '4'
+numeralFor Identify_5 = '5'
+numeralFor Identify_6 = '6'
+numeralFor Identify_7 = '7'
+numeralFor Identify_8 = '8'
+numeralFor Identify_9 = '9'
+

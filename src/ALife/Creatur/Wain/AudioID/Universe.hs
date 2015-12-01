@@ -57,10 +57,12 @@ module ALife.Creatur.Wain.AudioID.Universe
     uPopControlDeltaE,
     uClassifierThresholdRange,
     uClassifierR0Range,
-    uClassifierDRange,
+    uClassifierRfRange,
+    uClassifierTfRange,
     uPredictorThresholdRange,
     uPredictorR0Range,
-    uPredictorDRange,
+    uPredictorRfRange,
+    uPredictorTfRange,
     uDefaultOutcomeRange,
     uImprintOutcomeRange,
     uDepthRange,
@@ -133,10 +135,12 @@ data Universe a = Universe
     _uPopControlDeltaE :: Persistent Double,
     _uClassifierThresholdRange :: (UIDouble, UIDouble),
     _uClassifierR0Range :: (UIDouble, UIDouble),
-    _uClassifierDRange :: (UIDouble, UIDouble),
+    _uClassifierRfRange :: (UIDouble, UIDouble),
+    _uClassifierTfRange :: (Word16, Word16),
     _uPredictorThresholdRange :: (UIDouble, UIDouble),
     _uPredictorR0Range :: (UIDouble, UIDouble),
-    _uPredictorDRange :: (UIDouble, UIDouble),
+    _uPredictorRfRange :: (UIDouble, UIDouble),
+    _uPredictorTfRange :: (Word16, Word16),
     _uDefaultOutcomeRange :: (PM1Double, PM1Double),
     _uImprintOutcomeRange :: (PM1Double, PM1Double),
     _uDepthRange :: (Word8, Word8),
@@ -252,8 +256,11 @@ cClassifierThresholdRange = requiredSetting "classifierThresholdRange"
 cClassifierR0Range :: Setting (UIDouble, UIDouble)
 cClassifierR0Range = requiredSetting "classifierR0Range"
 
-cClassifierDRange :: Setting (UIDouble, UIDouble)
-cClassifierDRange = requiredSetting "classifierDecayRange"
+cClassifierRfRange :: Setting (UIDouble, UIDouble)
+cClassifierRfRange = requiredSetting "classifierRfRange"
+
+cClassifierTfRange :: Setting (Word16, Word16)
+cClassifierTfRange = requiredSetting "classifierTfRange"
 
 cPredictorThresholdRange :: Setting (UIDouble, UIDouble)
 cPredictorThresholdRange = requiredSetting "predictorThresholdRange"
@@ -261,8 +268,11 @@ cPredictorThresholdRange = requiredSetting "predictorThresholdRange"
 cPredictorR0Range :: Setting (UIDouble, UIDouble)
 cPredictorR0Range = requiredSetting "predictorR0Range"
 
-cPredictorDRange :: Setting (UIDouble, UIDouble)
-cPredictorDRange = requiredSetting "predictorDecayRange"
+cPredictorRfRange :: Setting (UIDouble, UIDouble)
+cPredictorRfRange = requiredSetting "predictorRfRange"
+
+cPredictorTfRange :: Setting (Word16, Word16)
+cPredictorTfRange = requiredSetting "predictorTfRange"
 
 cDefaultOutcomeRange :: Setting (PM1Double, PM1Double)
 cDefaultOutcomeRange = requiredSetting "defaultOutcomeRange"
@@ -333,10 +343,12 @@ config2Universe getSetting =
         = mkPersistent 0 (workDir ++ "/popControlDeltaE"),
       _uClassifierThresholdRange = getSetting cClassifierThresholdRange,
       _uClassifierR0Range = getSetting cClassifierR0Range,
-      _uClassifierDRange = getSetting cClassifierDRange,
+      _uClassifierRfRange = getSetting cClassifierRfRange,
+      _uClassifierTfRange = getSetting cClassifierTfRange,
       _uPredictorThresholdRange = getSetting cPredictorThresholdRange,
       _uPredictorR0Range = getSetting cPredictorR0Range,
-      _uPredictorDRange = getSetting cPredictorDRange,
+      _uPredictorRfRange = getSetting cPredictorRfRange,
+      _uPredictorTfRange = getSetting cPredictorTfRange,
       _uDefaultOutcomeRange = getSetting cDefaultOutcomeRange,
       _uImprintOutcomeRange = getSetting cImprintOutcomeRange,
       _uDepthRange = getSetting cDepthRange,

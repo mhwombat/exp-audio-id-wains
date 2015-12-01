@@ -26,7 +26,7 @@ numTests :: Int
 numTests = 500
 
 dir :: String
-dir = "/home/eamybut/AudioDatabase/Raw/"
+dir = "/home/eamybut/TI46/HTK_MFCC_endpointed/TRAIN-RAW/"
 
 readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do
@@ -36,8 +36,8 @@ readDirAndShuffle d = do
 
 readAudio2 :: FilePath -> IO (Audio, Int)
 readAudio2 f = do
-  img <- readAudio f 172
-  return (img, read . take 2 . takeFileName $ f)
+  img <- readAudio f 60
+  return (img, read [takeFileName f !! 1])
 
 run :: ([Double], [Double]) -> ((Audio, Int), (Audio, Int))
         -> IO ([Double], [Double])

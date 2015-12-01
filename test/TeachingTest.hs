@@ -18,7 +18,7 @@ import ALife.Creatur.Wain
 import ALife.Creatur.Wain.BrainInternal (classifier, predictor,
   makeBrain, decisionQuality)
 import ALife.Creatur.Wain.Classifier (buildClassifier)
-import ALife.Creatur.Wain.GeneticSOMInternal (ExponentialParams(..))
+import ALife.Creatur.Wain.GeneticSOMInternal (LearningParams(..))
 import ALife.Creatur.Wain.Audio.Pattern
 import qualified ALife.Creatur.Wain.Audio.Wain as AW
 import ALife.Creatur.Wain.Muser (makeMuser)
@@ -68,10 +68,9 @@ testWain = w'
         wIos = [doubleToPM1 reward, 0, 0, 0]
         wPredictor = buildPredictor ep (wCSize*11) 0.1
         wHappinessWeights = makeWeights [1, 0, 0, 0]
-        -- The classifier does most of its learning by round 100.
-        ec = ExponentialParams 0.1 0.0005
+        ec = LearningParams 0.1 0.001 (fromIntegral numImprints)
         -- The predictor needs to keep learning longer.
-        ep = ExponentialParams 0.1 0.0005
+        ep = LearningParams 0.1 0.0001 (fromIntegral numImprints)
         w = buildWainAndGenerateGenome wName wAppearance wBrain
               wDevotion wAgeOfMaturity wPassionDelta wBoredomDelta
         (w', _) = adjustEnergy 0.5 w
@@ -81,7 +80,8 @@ imprintOne w obj = do
   let a = correctActions !! (objectNum obj)
   putStrLn $ "Teaching " ++ agentId w ++ " that correct action for "
     ++ objectId obj ++ " is " ++ show a
-  return $ imprint [objectAppearance obj] a w
+  let (_, _, w') = imprint [objectAppearance obj] a w
+  return w'
 
 tryOne :: AudioWain -> Object Action -> IO (AudioWain)
 tryOne w obj = do

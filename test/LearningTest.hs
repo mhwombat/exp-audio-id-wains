@@ -18,7 +18,7 @@ import ALife.Creatur.Wain.BrainInternal (classifier, predictor,
   makeBrain, scenarioReport, responseReport, decisionReport,
   decisionQuality)
 import ALife.Creatur.Wain.Classifier (buildClassifier)
-import ALife.Creatur.Wain.GeneticSOMInternal (ExponentialParams(..))
+import ALife.Creatur.Wain.GeneticSOMInternal (LearningParams(..))
 import ALife.Creatur.Wain.Audio.Pattern
 import qualified ALife.Creatur.Wain.Audio.Wain as AW
 import ALife.Creatur.Wain.Muser (makeMuser)
@@ -71,9 +71,9 @@ testWain = w'
         wPredictor = buildPredictor ep (wCSize*11) 0.1
         wHappinessWeights = makeWeights [1, 0, 0]
         -- The classifier does most of its learning by round 100.
-        ec = ExponentialParams 0.2 0.05
+        ec = LearningParams 0.2 0.05 (fromIntegral numTests)
         -- The predictor needs to keep learning longer.
-        ep = ExponentialParams 0.1 0.005
+        ep = LearningParams 0.1 0.005 (fromIntegral numTests)
         w = buildWainAndGenerateGenome wName wAppearance wBrain
               wDevotion wAgeOfMaturity wPassionDelta wBoredomDelta
         (w', _) = adjustEnergy 0.5 w

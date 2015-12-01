@@ -110,7 +110,7 @@ tryOne w k obj = do
       return k
 
 dir :: String
-dir = "/home/eamybut/AudioDatabase/Raw/"
+dir = "/home/eamybut/TI46/HTK_MFCC_endpointed/"
 
 readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do

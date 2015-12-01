@@ -36,7 +36,7 @@ executable exp-audio-id-wains-daemon
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     hdaemonize ==0.5.*,
@@ -72,7 +72,7 @@ executable exp-audio-id-wains-init
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -106,7 +106,7 @@ executable exp-audio-id-wains-examine
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -142,7 +142,7 @@ Test-suite exp-audio-id-wains-tests
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     creatur-wains-test-utils ==0.1.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
@@ -177,7 +177,7 @@ executable exp-audio-id-wains-learning-test
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -211,7 +211,7 @@ executable exp-audio-id-wains-teaching-test
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -230,8 +230,8 @@ executable exp-audio-id-wains-teaching-test
                     zlib ==0.6.*
   hs-source-dirs:   src, test
 
-executable exp-audio-id-wains-ronan-test
-  main-is:          RonanTest.hs
+executable exp-audio-id-wains-single-test
+  main-is:          SingleWain.hs
   ghc-options:      -Wall -Werror
   build-depends:
                     app-settings ==0.2.* && >=0.2.0.5,
@@ -245,7 +245,7 @@ executable exp-audio-id-wains-ronan-test
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -279,7 +279,7 @@ executable exp-audio-id-big-test
                     containers ==0.5.*,
                     creatur ==5.9.*,
                     creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -304,7 +304,7 @@ executable exp-audio-id-diff-analysis
   build-depends:
                     base >=4.8 && <5,
                     creatur ==5.9.*,
-                    creatur-wains ==7.11.*,
+                    creatur-wains ==7.13.*,
                     creatur-audio-wains ==1.1.*,
                     MonadRandom ==0.4.*,
                     directory ==1.2.*,
