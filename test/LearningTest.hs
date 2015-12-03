@@ -42,7 +42,7 @@ import System.Directory
 import System.FilePath.Posix (takeFileName)
 
 numTests :: Int
-numTests = 1000
+numTests = 5
 
 reward :: Double
 reward = 0.1
@@ -64,7 +64,7 @@ testWain = w'
         wAgeOfMaturity = 100
         wPassionDelta = 0
         wBoredomDelta = 0
-        wClassifier = buildClassifier ec wCSize 0.14 PatternTweaker
+        wClassifier = buildClassifier ec wCSize 0.2 PatternTweaker
         wCSize = 500
         wMuser = makeMuser [0, 0, 0, 0] 1
         wIos = [doubleToPM1 reward, 0, 0, 0]
@@ -118,7 +118,7 @@ tryOne w obj = do
   return wainFinal
 
 dir :: String
-dir = "/home/eamybut/AudioDatabase/Raw/"
+dir = "/home/eamybut/TI46/HTK_MFCC_endpointed/TRAIN-RAW"
 
 readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do
@@ -126,16 +126,16 @@ readDirAndShuffle d = do
   files <- map (d ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readAudio2 :: FilePath -> IO (Object Action)
-readAudio2 f = do
-  audio <- readAudio f 172
+readOneSample :: Int -> FilePath -> IO (Object Action)
+readOneSample nvec f = do
+  audio <- readAudio f nvec
   return $ IObject audio (takeFileName f)
 
 main :: IO ()
 main = do
   putStrLn $ "numTests=" ++ show numTests
   files <- take numTests . drop 2 <$> readDirAndShuffle dir
-  audios <- mapM readAudio2 files
+  audios <- mapM (readOneSample 110) files
   _ <- foldM tryOne testWain audios
   putStrLn "test complete"
 

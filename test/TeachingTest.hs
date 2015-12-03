@@ -116,8 +116,11 @@ tryOne w obj = do
   putStrLn $ "DQ=" ++ show (decisionQuality . view brain $ w)
   return wainFinal
 
-dir :: String
-dir = "/home/eamybut/AudioDatabase/Raw/"
+trainingDir :: String
+trainingDir = "/home/eamybut/TI46/HTK_MFCC_endpointed/TRAIN-RAW"
+
+testDir :: String
+testDir = "/home/eamybut/TI46/HTK_MFCC_endpointed/TEST-RAW"
 
 readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do
@@ -125,24 +128,28 @@ readDirAndShuffle d = do
   files <- map (d ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readAudio2 :: FilePath -> IO (Object Action)
-readAudio2 f = do
-  audio <- readAudio f 172
+readOneSample :: Int -> FilePath -> IO (Object Action)
+readOneSample nvec f = do
+  audio <- readAudio f nvec
   return $ IObject audio (takeFileName f)
 
 numImprints :: Int
-numImprints = 400
+numImprints = 5
+
+numTests :: Int
+numTests = 5
 
 main :: IO ()
 main = do
   putStrLn $ "numImprints=" ++ show numImprints
   putStrLn $ "stats=" ++ show (stats testWain)
-  files <- drop 2 <$> readDirAndShuffle dir
-  audios <- mapM readAudio2 files
-  let (imprintAudios, testAudios) = splitAt numImprints audios
-  imprintedWain <- foldM imprintOne testWain imprintAudios
+  imprintFiles <- take numImprints . drop 2 <$> readDirAndShuffle trainingDir
+  imprintSamples <- mapM (readOneSample 110) imprintFiles
+  testFiles <- take numTests . drop 2 <$> readDirAndShuffle testDir
+  testSamples <- mapM (readOneSample 110) testFiles
+  imprintedWain <- foldM imprintOne testWain imprintSamples
   putStrLn "Imprinted prediction models"
   mapM_ putStrLn $ AW.describePredictorModels imprintedWain
-  _ <- foldM tryOne imprintedWain testAudios
+  _ <- foldM tryOne imprintedWain testSamples
   putStrLn "test complete"
 

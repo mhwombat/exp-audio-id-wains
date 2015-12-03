@@ -20,23 +20,22 @@ import ALife.Creatur.Wain.UnitInterval (uiToDouble)
 import Control.Monad (foldM)
 import Control.Monad.Random (evalRand, mkStdGen)
 import System.Directory (getDirectoryContents)
+import System.Environment (getArgs)
 import System.FilePath.Posix (takeFileName)
 
 numTests :: Int
 numTests = 500
 
-dir :: String
-dir = "/home/eamybut/TI46/HTK_MFCC_endpointed/TRAIN-RAW/"
-
 readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do
   let g = mkStdGen 263167 -- seed
-  files <- map (d ++) . drop 2 <$> getDirectoryContents d
+  let d2 = d ++ "/"
+  files <- map (d2 ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readAudio2 :: FilePath -> IO (Audio, Int)
-readAudio2 f = do
-  img <- readAudio f 60
+readAudio2 :: Int -> FilePath -> IO (Audio, Int)
+readAudio2 nvec f = do
+  img <- readAudio f nvec
   return (img, read [takeFileName f !! 1])
 
 run :: ([Double], [Double]) -> ((Audio, Int), (Audio, Int))
@@ -54,9 +53,12 @@ run (intraDiffs, interDiffs) ((i1, n1), (i2, n2)) = do
   
 main :: IO ()
 main = do
+  args <- getArgs
+  let dir = head args
+  let nvec = read $ args !! 1
   putStrLn $ "numTests=" ++ show numTests
   files <- take numTests . drop 2 <$> readDirAndShuffle dir
-  imgs <- mapM readAudio2 files
+  imgs <- mapM (readAudio2 nvec) files
   let imgPairs = [(a, b) | a <- imgs, b <- imgs, a /= b]
   (intraDiffs, interDiffs) <- foldM run ([], []) imgPairs
   putStrLn $ "Intra-cluster mean diff=" ++ show (mean intraDiffs)
