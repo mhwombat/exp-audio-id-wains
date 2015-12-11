@@ -36,7 +36,7 @@ module ALife.Creatur.Wain.AudioID.Universe
     uGenFmris,
     uSleepBetweenTasks,
     uPatternDB,
-    uMaxVectorCount,
+    uNumVectors,
     uVectorLength,
     uClassifierSizeRange,
     uPredictorSizeRange,
@@ -114,7 +114,7 @@ data Universe a = Universe
     _uGenFmris :: Bool,
     _uSleepBetweenTasks :: Int,
     _uPatternDB :: PatternDB,
-    _uMaxVectorCount :: Int,
+    _uNumVectors :: Int,
     _uVectorLength :: Int,
     _uClassifierSizeRange :: (Word16, Word16),
     _uPredictorSizeRange :: (Word16, Word16),
@@ -196,8 +196,8 @@ cSleepBetweenTasks = requiredSetting "sleepTimeBetweenTasks"
 cAudioDir :: Setting FilePath
 cAudioDir = requiredSetting "audioDir"
 
-cMaxVectorCount :: Setting Int
-cMaxVectorCount = requiredSetting "maxVectorCount"
+cNumVectors :: Setting Int
+cNumVectors = requiredSetting "numVectors"
 
 cVectorLength :: Setting Int
 cVectorLength = requiredSetting "vectorLength"
@@ -319,8 +319,8 @@ config2Universe getSetting =
       _uShowPredictions = getSetting cShowPredictions,
       _uGenFmris = getSetting cGenFmris,
       _uSleepBetweenTasks = getSetting cSleepBetweenTasks,
-      _uPatternDB = mkPatternDB audioDir mvc,
-      _uMaxVectorCount = mvc,
+      _uPatternDB = mkPatternDB audioDir nv,
+      _uNumVectors = nv,
       _uVectorLength = getSetting cVectorLength,
       _uClassifierSizeRange = getSetting cClassifierSizeRange,
       _uPredictorSizeRange = getSetting cPredictorSizeRange,
@@ -363,4 +363,4 @@ config2Universe getSetting =
         (a, b) = getSetting cAllowedPopulationRange
         a' = round (fromIntegral p0 * a)
         b' = round (fromIntegral p0 * b)
-        mvc = getSetting cMaxVectorCount
+        nv = getSetting cNumVectors

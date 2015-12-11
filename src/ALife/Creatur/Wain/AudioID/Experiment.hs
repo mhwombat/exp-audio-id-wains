@@ -115,7 +115,7 @@ randomAudioWain wName u classifierSize = do
   wAgeOfMaturity <- getRandomR . view U.uMaturityRange $ u
   wPassionDelta <- getRandomR . view U.uBoredomDeltaRange $ u
   wBoredomDelta <- getRandomR . view U.uPassionDeltaRange $ u
-  let n = (view U.uMaxVectorCount u)*(view U.uVectorLength u)
+  let n = (view U.uNumVectors u)*(view U.uVectorLength u)
   let wAppearance = mkAudio $ replicate n 0
   return $ W.buildWainAndGenerateGenome wName wAppearance wBrain
     wDevotion wAgeOfMaturity wPassionDelta wBoredomDelta
