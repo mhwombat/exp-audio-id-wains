@@ -91,8 +91,7 @@ trainOne (w, modelCreationData) obj = do
   let a = correctActions !! (objectNum obj)
   putStrLn $ "Teaching " ++ agentId w ++ " that correct action for "
     ++ objectId obj ++ " is " ++ show a
-  let (lds, sps, w') = imprint [objectAppearance obj] a w
-  putStrLn $ "lds=" ++ show lds
+  let (_, sps, w') = imprint [objectAppearance obj] a w
   let bmu = head . fst $ maximumBy (comparing snd) sps
   putStrLn $ objectId obj ++ "," ++ numeral : "," ++ show bmu
   let modelCreationData' = updateModelCreationData bmu numeral modelCreationData

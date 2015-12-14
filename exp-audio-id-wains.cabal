@@ -1,5 +1,5 @@
 name:                exp-audio-id-wains
-version:             2.16
+version:             2.17
 synopsis:            ALife agent that maps images to numerals.
 description:         ALife agent that maps images to numerals.
 homepage:            https://github.com/mhwombat/exp-audio-id-wains
@@ -11,15 +11,6 @@ copyright:           (c) Amy de Buitléir 2013-2015
 category:            Data
 build-type:          Simple
 cabal-version:       >=1.8
-
-source-repository head
-  type:     git
-  location: https://github.com/mhwombat/numeral-wains.git
-
-source-repository this
-  type:     git
-  location: https://github.com/mhwombat/numeral-wains.git
-  tag:      2.16
 
 executable exp-audio-id-wains-daemon
   main-is:          ALife/Creatur/Wain/AudioID/Daemon.hs
@@ -35,8 +26,8 @@ executable exp-audio-id-wains-daemon
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     hdaemonize ==0.5.*,
@@ -46,7 +37,7 @@ executable exp-audio-id-wains-daemon
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     text ==1.2.*,
                     time ==1.5.*,
@@ -71,8 +62,8 @@ executable exp-audio-id-wains-init
                     colour ==2.3.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -81,7 +72,7 @@ executable exp-audio-id-wains-init
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -105,8 +96,8 @@ executable exp-audio-id-wains-examine
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -115,7 +106,7 @@ executable exp-audio-id-wains-examine
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -141,9 +132,9 @@ Test-suite exp-audio-id-wains-tests
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
-                    creatur-wains-test-utils ==0.1.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
+                    creatur-wains-test-utils ==1.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -151,7 +142,7 @@ Test-suite exp-audio-id-wains-tests
                     MonadRandom ==0.4.*,
                     mtl ==2.2.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     test-framework ==0.8.*,
                     test-framework-hunit ==0.3.*,
@@ -176,8 +167,8 @@ executable exp-audio-id-wains-learning-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -186,7 +177,7 @@ executable exp-audio-id-wains-learning-test
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -210,8 +201,8 @@ executable exp-audio-id-wains-teaching-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -220,7 +211,7 @@ executable exp-audio-id-wains-teaching-test
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -244,8 +235,8 @@ executable exp-audio-id-wains-single-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -254,7 +245,7 @@ executable exp-audio-id-wains-single-test
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -278,8 +269,8 @@ executable exp-audio-id-big-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.1.*,
-                    creatur-wains ==7.13.*,
+                    creatur-audio-wains ==1.2,
+                    creatur-wains ==8.0.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -288,7 +279,7 @@ executable exp-audio-id-big-test
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    som ==8.2.*,
+                    som ==9.0.*,
                     split ==0.2.*,
                     time ==1.5.*,
                     transformers ==0.4.*,
@@ -304,8 +295,8 @@ executable exp-audio-id-diff-analysis
   build-depends:
                     base >=4.8 && <5,
                     creatur ==5.9.*,
-                    creatur-wains ==7.13.*,
-                    creatur-audio-wains ==1.1.*,
+                    creatur-wains ==8.0.*,
+                    creatur-audio-wains ==1.2,
                     MonadRandom ==0.4.*,
                     directory ==1.2.*,
                     filepath ==1.4.*
