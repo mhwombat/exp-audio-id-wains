@@ -59,7 +59,7 @@ testWain :: AudioWain
 testWain = w'
   where wName = "Fred"
         wAppearance = mkAudio $ replicate (172*39) 0
-        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 wIos
+        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 32 wIos wRds
         wDevotion = 0.1
         wAgeOfMaturity = 100
         wPassionDelta = 0
@@ -68,6 +68,7 @@ testWain = w'
         wCSize = 500
         wMuser = makeMuser [0, 0, 0, 0] 1
         wIos = [doubleToPM1 reward, 0, 0, 0]
+        wRds = [doubleToPM1 reward, 0, 0, 0]
         wPredictor = buildPredictor ep (wCSize*11) 0.1
         wHappinessWeights = makeWeights [1, 0, 0]
         -- The classifier does most of its learning by round 100.

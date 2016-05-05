@@ -68,7 +68,7 @@ import Control.Monad.State.Lazy (StateT, execStateT, evalStateT, get)
 import Data.List (intercalate, sortBy)
 import Data.Ord (comparing)
 import Data.Version (showVersion)
-import Data.Word (Word16)
+import Data.Word (Word64)
 import Paths_exp_audio_id_wains (version)
 import System.Directory (createDirectoryIfMissing)
 import System.FilePath (dropFileName)
@@ -84,7 +84,7 @@ type Object = O.Object Action
 
 randomAudioWain
   :: RandomGen r
-    => String -> U.Universe AudioWain -> Word16 -> Rand r AudioWain
+    => String -> U.Universe AudioWain -> Word64 -> Rand r AudioWain
 randomAudioWain wName u classifierSize = do
   let fcp = RandomLearningParams
                { _r0Range = view U.uClassifierR0Range u,
@@ -109,8 +109,10 @@ randomAudioWain wName u classifierSize = do
   dp <- getRandomR $ view U.uDepthRange u
   let mr = makeMuser dOut dp
   t <- getRandom
+  s <- getRandomR (view U.uStrictnessRange u)
   ios <- take 4 <$> getRandomRs (view U.uImprintOutcomeRange u)
-  let (Right wBrain) = makeBrain c mr dr hw t ios
+  rds <- take 4 <$> getRandomRs (view U.uReinforcementDeltasRange u)
+  let (Right wBrain) = makeBrain c mr dr hw t s ios rds
   wDevotion <- getRandomR . view U.uDevotionRange $ u
   wAgeOfMaturity <- getRandomR . view U.uMaturityRange $ u
   wPassionDelta <- getRandomR . view U.uBoredomDeltaRange $ u
@@ -560,7 +562,7 @@ imprintCorrectAction = do
   let a = correctActions !! (O.objectNum obj)
   report $ "Teaching " ++ agentId w ++ " that correct action for "
     ++ O.objectId obj ++ " is " ++ show a
-  let (_, _, w') = W.imprint [p] a w
+  let (_, _, _, _, w') = W.imprint [p] a w
   assign subject w' 
   
 writeRawStats

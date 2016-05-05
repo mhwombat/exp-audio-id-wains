@@ -39,7 +39,7 @@ import Data.ByteString as BS (readFile, writeFile)
 import Data.List (minimumBy, foldl')
 import Data.Ord (comparing)
 import qualified Data.Serialize as DS (decode, encode)
-import Data.Word (Word8, Word16)
+import Data.Word (Word8, Word64)
 import System.Directory
 import System.FilePath.Posix (takeFileName)
 import System.Environment (getArgs)
@@ -64,12 +64,12 @@ data Params = Params
     dataDir :: FilePath,
     cr0 :: UIDouble,
     crf :: UIDouble,
-    ctf :: Word16,
+    ctf :: Word64,
     cdt :: UIDouble,
-    cSize :: Word16,
+    cSize :: Word64,
     pr0 :: UIDouble,
     prf :: UIDouble,
-    ptf :: Word16,
+    ptf :: Word64,
     pdt :: UIDouble,
     defO :: [PM1Double],
     depth :: Word8
@@ -79,7 +79,7 @@ testWain :: Params -> AudioWain
 testWain p = w'
   where wName = "Fred"
         wAppearance = mkAudio $ replicate (172*39) 0
-        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 wIos
+        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 32 wIos wRds
         wDevotion = 0.1
         wAgeOfMaturity = 100
         wPassionDelta = 0
@@ -87,6 +87,7 @@ testWain p = w'
         wClassifier = buildClassifier ec (cSize p) (cdt p) PatternTweaker
         wMuser = makeMuser (defO p) (depth p)
         wIos = [doubleToPM1 reward, 0, 0, 0]
+        wRds = [0.1, 0, 0, 0]
         wPredictorSize = cSize p * fromIntegral numActions
         wPredictor = buildPredictor ep wPredictorSize (pdt p)
         wHappinessWeights = makeWeights [1, 0, 0, 0]
@@ -98,7 +99,7 @@ testWain p = w'
 
 imprintOne :: AudioWain -> Object Action -> AudioWain
 imprintOne w obj = w'
-  where (_, _, w') = imprint [objectAppearance obj] a w
+  where (_, _, _, _, w') = imprint [objectAppearance obj] a w
         a = correctActions !! (objectNum obj)
 
 testOne :: Bool -> AudioWain -> Int -> Object Action -> IO Int

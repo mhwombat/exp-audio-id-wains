@@ -57,7 +57,7 @@ testWain :: AudioWain
 testWain = w'
   where wName = "Fred"
         wAppearance = mkAudio $ replicate (172*39) 0
-        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 wIos
+        Right wBrain = makeBrain wClassifier wMuser wPredictor wHappinessWeights 1 32 wIos wRds
         wDevotion = 0.1
         wAgeOfMaturity = 100
         wPassionDelta = 0
@@ -66,6 +66,7 @@ testWain = w'
         wCSize = 2000
         wMuser = makeMuser [-0.01, -0.01, -0.01, -0.01] 1
         wIos = [doubleToPM1 reward, 0, 0, 0]
+        wRds = [doubleToPM1 reward, 0, 0, 0]
         wPredictor = buildPredictor ep (wCSize*11) 0.1
         wHappinessWeights = makeWeights [1, 0, 0, 0]
         ec = LearningParams 0.1 0.001 (fromIntegral numImprints)
@@ -80,7 +81,7 @@ imprintOne w obj = do
   let a = correctActions !! (objectNum obj)
   putStrLn $ "Teaching " ++ agentId w ++ " that correct action for "
     ++ objectId obj ++ " is " ++ show a
-  let (_, _, w') = imprint [objectAppearance obj] a w
+  let (_, _, _, _, w') = imprint [objectAppearance obj] a w
   return w'
 
 tryOne :: AudioWain -> Object Action -> IO (AudioWain)
