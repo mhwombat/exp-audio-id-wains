@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.AudioID.Action
--- Copyright   :  (c) Amy de Buitléir 2012-2015
+-- Copyright   :  (c) Amy de Buitléir 2012-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -14,6 +14,7 @@
 module ALife.Creatur.Wain.AudioID.Action
   (
     Action(..),
+    actionDiff,
     correct,
     correctActions,
     numActions,
@@ -23,6 +24,7 @@ module ALife.Creatur.Wain.AudioID.Action
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic)
 import ALife.Creatur.Genetics.Diploid (Diploid)
 import ALife.Creatur.Wain.Pretty (Pretty)
+import ALife.Creatur.Wain.UnitInterval (UIDouble)
 import Data.Serialize (Serialize)
 import GHC.Generics (Generic)
 import System.Random (Random, random, randomR)
@@ -41,6 +43,11 @@ instance Random Action where
   randomR (a,b) g = (toEnum n, g')
     where (n, g') = randomR (fromEnum a, fromEnum b) g
   random = randomR (minBound,maxBound)
+
+actionDiff :: Action -> Action -> UIDouble
+actionDiff a b
+  | a == b     = 0
+  | otherwise = 1
 
 correct :: Action -> Int -> Bool
 correct Identify_0 0 = True

@@ -1,5 +1,5 @@
 name:                exp-audio-id-wains
-version:             2.17.1
+version:             2.18.0
 synopsis:            ALife agent that maps images to numerals.
 description:         ALife agent that maps images to numerals.
 homepage:            https://github.com/mhwombat/exp-audio-id-wains
@@ -7,7 +7,7 @@ license:             BSD3
 license-file:        LICENSE
 author:              Amy de Buitléir
 maintainer:          amy@nualeargais.ie
-copyright:           (c) Amy de Buitléir 2013-2015
+copyright:           (c) Amy de Buitléir 2013-2016
 category:            Data
 build-type:          Simple
 cabal-version:       >=1.8
@@ -26,8 +26,8 @@ executable exp-audio-id-wains-daemon
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     hdaemonize ==0.5.*,
@@ -44,7 +44,7 @@ executable exp-audio-id-wains-daemon
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src
 
@@ -62,8 +62,8 @@ executable exp-audio-id-wains-init
                     colour ==2.3.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -78,7 +78,7 @@ executable exp-audio-id-wains-init
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src
 
@@ -96,8 +96,8 @@ executable exp-audio-id-wains-examine
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -112,7 +112,7 @@ executable exp-audio-id-wains-examine
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src
 
@@ -132,8 +132,8 @@ Test-suite exp-audio-id-wains-tests
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     creatur-wains-test-utils ==1.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
@@ -149,7 +149,7 @@ Test-suite exp-audio-id-wains-tests
                     test-framework-quickcheck2 ==0.3.*,
                     transformers ==0.5.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     QuickCheck ==2.8.*
   Other-modules:    ALife.Creatur.Wain.AudioID.ActionQC
 
@@ -167,8 +167,8 @@ executable exp-audio-id-wains-learning-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -183,7 +183,7 @@ executable exp-audio-id-wains-learning-test
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src, test
 
@@ -201,8 +201,8 @@ executable exp-audio-id-wains-teaching-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -217,7 +217,7 @@ executable exp-audio-id-wains-teaching-test
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src, test
 
@@ -235,8 +235,8 @@ executable exp-audio-id-wains-single-test
                     cond ==0.4.*,
                     containers ==0.5.*,
                     creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
+                    creatur-audio-wains ==1.3.*,
+                    creatur-wains ==8.7.*,
                     directory ==1.2.*,
                     filepath ==1.4.*,
                     JuicyPixels ==3.2.*,
@@ -251,41 +251,7 @@ executable exp-audio-id-wains-single-test
                     transformers ==0.5.*,
                     unix ==2.7.*,
                     utf8-string ==1.*,
-                    vector ==0.10.*,
-                    zlib ==0.6.*
-  hs-source-dirs:   src, test
-
-executable exp-audio-id-big-test
-  main-is:          BigTest.hs
-  ghc-options:      -Wall -Werror
-  build-depends:
-                    app-settings ==0.2.* && >=0.2.0.5,
-                    array ==0.5.*,
-                    base >=4.8 && <5,
-                    base64-bytestring ==1.0.*,
-                    bytestring ==0.10.*,
-                    cereal ==0.5.*,
-                    colour ==2.3.*,
-                    cond ==0.4.*,
-                    containers ==0.5.*,
-                    creatur ==5.9.*,
-                    creatur-audio-wains ==1.2.*,
-                    creatur-wains ==8.4.*,
-                    directory ==1.2.*,
-                    filepath ==1.4.*,
-                    JuicyPixels ==3.2.*,
-                    lens ==4.13.*,
-                    MonadRandom ==0.4.*,
-                    mtl ==2.2.*,
-                    old-locale ==1.0.*,
-                    random ==1.1.*,
-                    som ==9.0.*,
-                    split ==0.2.*,
-                    time ==1.6.*,
-                    transformers ==0.5.*,
-                    unix ==2.7.*,
-                    utf8-string ==1.*,
-                    vector ==0.10.*,
+                    vector ==0.11.*,
                     zlib ==0.6.*
   hs-source-dirs:   src, test
 
@@ -295,8 +261,8 @@ executable exp-audio-id-diff-analysis
   build-depends:
                     base >=4.8 && <5,
                     creatur ==5.9.*,
-                    creatur-wains ==8.4.*,
-                    creatur-audio-wains ==1.2.*,
+                    creatur-wains ==8.7.*,
+                    creatur-audio-wains ==1.3.*,
                     MonadRandom ==0.4.*,
                     directory ==1.2.*,
                     filepath ==1.4.*

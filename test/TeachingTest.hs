@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  TeachingTest
--- Copyright   :  (c) Amy de Buitléir 2013-2015
+-- Copyright   :  (c) Amy de Buitléir 2013-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -21,15 +21,16 @@ import ALife.Creatur.Wain.Classifier (buildClassifier)
 import ALife.Creatur.Wain.GeneticSOMInternal (LearningParams(..))
 import ALife.Creatur.Wain.Audio.Pattern
 import qualified ALife.Creatur.Wain.Audio.Wain as AW
-import ALife.Creatur.Wain.Muser (makeMuser)
+import ALife.Creatur.Wain.Audio.Object (Object(..), objectNum, objectId,
+  objectAppearance)
 import ALife.Creatur.Wain.AudioID.Action (Action(..), correct,
   correctActions)
 import ALife.Creatur.Wain.AudioID.Experiment
-import ALife.Creatur.Wain.Audio.Object (Object(..), objectNum, objectId,
-  objectAppearance)
+import ALife.Creatur.Wain.Muser (makeMuser)
 import ALife.Creatur.Wain.PlusMinusOne (doubleToPM1)
 import ALife.Creatur.Wain.Predictor (buildPredictor)
 import ALife.Creatur.Wain.Response (action, outcomes)
+import ALife.Creatur.Wain.SimpleResponseTweaker (ResponseTweaker(..))
 import ALife.Creatur.Wain.Statistics (stats)
 import ALife.Creatur.Wain.UnitInterval (uiToDouble)
 import ALife.Creatur.Wain.Weights (makeWeights)
@@ -45,7 +46,9 @@ import System.FilePath.Posix (takeFileName)
 reward :: Double
 reward = 0.1
 
-runAction :: Action -> Object Action -> AudioWain -> AudioWain
+runAction
+  :: Action -> Object Action (ResponseTweaker Action) -> PatternWain
+    -> PatternWain
 runAction a obj w =
   if correct a (objectNum obj)
     then wCorrect
@@ -53,7 +56,7 @@ runAction a obj w =
   where (wCorrect, _) = adjustEnergy reward w
         (wIncorrect, _) = adjustEnergy (-reward) w
         
-testWain :: AudioWain
+testWain :: PatternWain
 testWain = w'
   where wName = "Fred"
         wAppearance = mkAudio $ replicate (172*39) 0
@@ -64,11 +67,12 @@ testWain = w'
         wBoredomDelta = 0
         wClassifier = buildClassifier ec wCSize 0.00021 PatternTweaker
         wCSize = 2000
-        wMuser = makeMuser [-0.01, -0.01, -0.01, -0.01] 1
+        Right wMuser = makeMuser [0, 0, 0, 0] 1
         wIos = [doubleToPM1 reward, 0, 0, 0]
         wRds = [doubleToPM1 reward, 0, 0, 0]
-        wPredictor = buildPredictor ep (wCSize*11) 0.1
+        wPredictor = buildPredictor ep (wCSize*11) 0.1 ResponseTweaker
         wHappinessWeights = makeWeights [1, 0, 0, 0]
+        -- The classifier does most of its learning by round 100.
         ec = LearningParams 0.1 0.001 (fromIntegral numImprints)
         -- The predictor needs to keep learning longer.
         ep = LearningParams 0.1 0.0001 (fromIntegral numImprints)
@@ -76,7 +80,9 @@ testWain = w'
               wDevotion wAgeOfMaturity wPassionDelta wBoredomDelta
         (w', _) = adjustEnergy 0.5 w
 
-imprintOne :: AudioWain -> Object Action -> IO (AudioWain)
+imprintOne
+  :: PatternWain -> Object Action (ResponseTweaker Action)
+    -> IO (PatternWain)
 imprintOne w obj = do
   let a = correctActions !! (objectNum obj)
   putStrLn $ "Teaching " ++ agentId w ++ " that correct action for "
@@ -84,12 +90,16 @@ imprintOne w obj = do
   let (_, _, _, _, w') = imprint [objectAppearance obj] a w
   return w'
 
-tryOne :: AudioWain -> Object Action -> IO (AudioWain)
+tryOne
+  :: PatternWain -> Object Action (ResponseTweaker Action)
+    -> IO (PatternWain)
 tryOne w obj = do
   putStrLn $ "-----<br/>"
   putStrLn $ "stats=" ++ show (stats w)
-  let (lds, _, _, _, r, wainAfterDecision) = chooseAction [objectAppearance obj] w
-  let (cBMU, _):(cBMU2, _):_ = sortBy (comparing snd) . head $ lds
+  let (ldss, _, _, _, r, wainAfterDecision)
+        = chooseAction [objectAppearance obj] w
+  putStrLn $ "ldss=" ++ show ldss
+  let (cBMU, _):(cBMU2, _):_ = sortBy (comparing snd) . head $ ldss
   let a = view action r
   putStrLn $ "Wain sees " ++ objectId obj ++ ", classifies it as "
     ++ show cBMU ++ " (alt. " ++ show cBMU2
@@ -101,9 +111,9 @@ tryOne w obj = do
   putStrLn $ "condition before=" ++ show (condition w) ++ " after=" ++ show (condition wainRewarded)
   putStrLn $ "happiness before=" ++ show (happiness w) ++ " after=" ++ show (happiness wainRewarded)
   putStr $ "Choosing to " ++ show a ++ " in response to " ++ objectId obj
-  if a /= correctActions !! (objectNum obj)
-    then putStrLn " was wrong"
-    else putStrLn " was correct"
+  if correct a (objectNum obj)
+    then putStrLn " was correct"
+    else putStrLn " was wrong"
   let (wainAfterReflection, err) = reflect [objectAppearance obj] r w wainRewarded
   putStrLn $ "err=" ++ show err
   -- keep the wain's energy constant
@@ -129,10 +139,10 @@ readDirAndShuffle d = do
   files <- map (d ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readOneSample :: Int -> FilePath -> IO (Object Action)
+readOneSample :: Int -> FilePath -> IO (Object Action (ResponseTweaker Action))
 readOneSample nvec f = do
   audio <- readAudio f nvec
-  return $ IObject audio (takeFileName f)
+  return $ PObject audio (takeFileName f)
 
 numImprints :: Int
 numImprints = 5

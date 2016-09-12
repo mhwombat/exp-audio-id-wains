@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  LearningTest
--- Copyright   :  (c) Amy de Buitléir 2013-2015
+-- Copyright   :  (c) Amy de Buitléir 2013-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -33,12 +33,12 @@ readDirAndShuffle d = do
   files <- map (d2 ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readAudio2 :: Int -> FilePath -> IO (Audio, Int)
+readAudio2 :: Int -> FilePath -> IO (Pattern, Int)
 readAudio2 nvec f = do
   img <- readAudio f nvec
   return (img, read [takeFileName f !! 1])
 
-run :: ([Double], [Double]) -> ((Audio, Int), (Audio, Int))
+run :: ([Double], [Double]) -> ((Pattern, Int), (Pattern, Int))
         -> IO ([Double], [Double])
 run (intraDiffs, interDiffs) ((i1, n1), (i2, n2)) = do
   putStr $ show n1 ++ " " ++ show n2 ++ " "

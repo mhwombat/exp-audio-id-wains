@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.AudioID.Universe
--- Copyright   :  (c) Amy de Buitléir 2012-2015
+-- Copyright   :  (c) Amy de Buitléir 2012-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -33,6 +33,9 @@ module ALife.Creatur.Wain.AudioID.Universe
     uRawStatsFile,
     uShowPredictorModels,
     uShowPredictions,
+    uShowScenarioReport,
+    uShowResponseReport,
+    uShowDecisionReport,
     uGenFmris,
     uSleepBetweenTasks,
     uPatternDB,
@@ -67,9 +70,8 @@ module ALife.Creatur.Wain.AudioID.Universe
     uStrictnessRange,
     uImprintOutcomeRange,
     uReinforcementDeltasRange,
-    uDepthRange,
-    uBoredomDeltaRange,
     uPassionDeltaRange,
+    uDepthRange,
     uCheckpoints,
     -- * Other
     U.agentIds,
@@ -113,6 +115,9 @@ data Universe a = Universe
     _uRawStatsFile :: FilePath,
     _uShowPredictorModels :: Bool,
     _uShowPredictions :: Bool,
+    _uShowScenarioReport :: Bool,
+    _uShowResponseReport :: Bool,
+    _uShowDecisionReport :: Bool,
     _uGenFmris :: Bool,
     _uSleepBetweenTasks :: Int,
     _uPatternDB :: PatternDB,
@@ -147,9 +152,8 @@ data Universe a = Universe
     _uStrictnessRange :: (Word64, Word64),
     _uImprintOutcomeRange :: (PM1Double, PM1Double),
     _uReinforcementDeltasRange :: (PM1Double, PM1Double),
-    _uDepthRange :: (Word8, Word8),
-    _uBoredomDeltaRange :: (UIDouble, UIDouble),
     _uPassionDeltaRange :: (UIDouble, UIDouble),
+    _uDepthRange :: (Word8, Word8),
     _uCheckpoints :: [CP.Checkpoint]
   } deriving Show
 makeLenses ''Universe
@@ -190,6 +194,15 @@ cShowPredictorModels = requiredSetting "showPredictorModels"
 
 cShowPredictions :: Setting Bool
 cShowPredictions = requiredSetting "showPredictions"
+
+cShowScenarioReport :: Setting Bool
+cShowScenarioReport = requiredSetting "showScenarioReport"
+
+cShowResponseReport :: Setting Bool
+cShowResponseReport = requiredSetting "showResponseReport"
+
+cShowDecisionReport :: Setting Bool
+cShowDecisionReport = requiredSetting "showDecisionReport"
 
 cGenFmris :: Setting Bool
 cGenFmris = requiredSetting "genFMRIs"
@@ -290,14 +303,11 @@ cImprintOutcomeRange = requiredSetting "imprintOutcomeRange"
 cReinforcementDeltasRange :: Setting (PM1Double, PM1Double)
 cReinforcementDeltasRange = requiredSetting "reinforcementDeltasRange"
 
-cDepthRange :: Setting (Word8, Word8)
-cDepthRange = requiredSetting "depthRange"
-
-cBoredomDeltaRange :: Setting (UIDouble, UIDouble)
-cBoredomDeltaRange = requiredSetting "boredomDeltaRange"
-
 cPassionDeltaRange :: Setting (UIDouble, UIDouble)
 cPassionDeltaRange = requiredSetting "passionDeltaRange"
+
+cDepthRange :: Setting (Word8, Word8)
+cDepthRange = requiredSetting "depthRange"
 
 cCheckpoints :: Setting [CP.Checkpoint]
 cCheckpoints = requiredSetting "checkpoints"
@@ -327,6 +337,9 @@ config2Universe getSetting =
       _uRawStatsFile = workDir ++ "/rawStatsFile",
       _uShowPredictorModels = getSetting cShowPredictorModels,
       _uShowPredictions = getSetting cShowPredictions,
+      _uShowScenarioReport = getSetting cShowScenarioReport,
+      _uShowResponseReport = getSetting cShowResponseReport,
+      _uShowDecisionReport = getSetting cShowDecisionReport,
       _uGenFmris = getSetting cGenFmris,
       _uSleepBetweenTasks = getSetting cSleepBetweenTasks,
       _uPatternDB = mkPatternDB audioDir nv,
@@ -363,9 +376,8 @@ config2Universe getSetting =
       _uStrictnessRange = getSetting cStrictnessRange,
       _uImprintOutcomeRange = getSetting cImprintOutcomeRange,
       _uReinforcementDeltasRange = getSetting cReinforcementDeltasRange,
-      _uDepthRange = getSetting cDepthRange,
-      _uBoredomDeltaRange = getSetting cBoredomDeltaRange,
       _uPassionDeltaRange = getSetting cPassionDeltaRange,
+      _uDepthRange = getSetting cDepthRange,
       _uCheckpoints = getSetting cCheckpoints
     }
   where en = getSetting cExperimentName

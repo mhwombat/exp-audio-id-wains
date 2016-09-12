@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  SingleWain
--- Copyright   :  (c) Amy de Buitléir 2015
+-- Copyright   :  (c) Amy de Buitléir 2015-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -15,21 +15,21 @@ module Main where
 
 import ALife.Creatur (agentId)
 import ALife.Creatur.Wain
-import ALife.Creatur.Wain.BrainInternal (makeBrain, scenarioReport,
-  responseReport, decisionReport, predictor)
+import ALife.Creatur.Wain.BrainInternal (makeBrain, predictor)
 import ALife.Creatur.Wain.Classifier (buildClassifier)
 import ALife.Creatur.Wain.GeneticSOMInternal (LearningParams(..),
   modelMap)
 import ALife.Creatur.Wain.Audio.Pattern
-import ALife.Creatur.Wain.Muser (makeMuser)
 import ALife.Creatur.Wain.AudioID.Action (Action(..), correct,
   correctActions, numeralFor)
 import ALife.Creatur.Wain.AudioID.Experiment
+import ALife.Creatur.Wain.Muser (makeMuser)
 import ALife.Creatur.Wain.Audio.Object (Object(..), objectNum, objectId,
   objectAppearance)
 import ALife.Creatur.Wain.Predictor (buildPredictor)
 import ALife.Creatur.Wain.Pretty (pretty)
 import ALife.Creatur.Wain.Response (action, outcomes)
+import ALife.Creatur.Wain.SimpleResponseTweaker (ResponseTweaker(..))
 import ALife.Creatur.Wain.Statistics (stats)
 import ALife.Creatur.Wain.UnitInterval (UIDouble)
 import ALife.Creatur.Wain.Weights (makeWeights)
@@ -51,7 +51,9 @@ type Numeral = Char
 reward :: Double
 reward = 1
 
-runAction :: Action -> Object Action -> AudioWain -> AudioWain
+runAction
+  :: Action -> Object Action (ResponseTweaker Action) -> PatternWain
+    -> PatternWain
 runAction a obj w =
   if correct a (objectNum obj)
     then wCorrect
@@ -59,7 +61,9 @@ runAction a obj w =
   where (wCorrect, _) = adjustEnergy reward w
         (wIncorrect, _) = adjustEnergy (-reward) w
         
-testWain :: UIDouble -> UIDouble -> UIDouble -> UIDouble -> UIDouble -> AudioWain
+testWain
+  :: UIDouble -> UIDouble -> UIDouble -> UIDouble -> UIDouble
+    -> PatternWain
 testWain threshold r0c rfc r0p rfp = w'
   where wName = "Fred"
         wAppearance = mkAudio $ replicate (172*39) 0
@@ -70,10 +74,10 @@ testWain threshold r0c rfc r0p rfp = w'
         wBoredomDelta = 0
         wClassifier = buildClassifier ec wCSize threshold PatternTweaker
         wCSize = 2000
-        wMuser = makeMuser [-0.01, -0.01, -0.01, -0.01] 1
+        Right wMuser = makeMuser [-0.01, -0.01, -0.01, -0.01] 1
         wIos = [0.1, 0, 0, 0]
         wRds = [0.1, 0, 0, 0]
-        wPredictor = buildPredictor ep (wCSize*11) 0.1
+        wPredictor = buildPredictor ep (wCSize*11) 0.1 ResponseTweaker
         wHappinessWeights = makeWeights [1, 0, 0, 0]
         ec = LearningParams r0c rfc 1594
         ep = LearningParams r0p rfp 1594
@@ -89,7 +93,10 @@ updateModelCreationData bmu numeral modelCreationData =
   insertWith f bmu (numeral, numeral) modelCreationData
   where f (x, _) (_, y) = (x, y)
 
-trainOne :: (AudioWain, ModelCreationData) -> Object Action -> IO (AudioWain, ModelCreationData)
+trainOne
+  :: (PatternWain, ModelCreationData)
+    -> Object Action (ResponseTweaker Action)
+      -> IO (PatternWain, ModelCreationData)
 trainOne (w, modelCreationData) obj = do
   let numeral = head . show $ objectNum obj
   let a = correctActions !! (objectNum obj)
@@ -98,6 +105,7 @@ trainOne (w, modelCreationData) obj = do
   -- putStrLn "Predictor models before"
   -- mapM_ putStrLn $ IW.describePredictorModels w
   let (_, sps, _, _, w') = imprint [objectAppearance obj] a w
+  let bmu = head . fst $ maximumBy (comparing snd) sps
   -- putStrLn $ "lds=" ++ show lds
   -- putStrLn $ "sps=" ++ show sps
   -- putStrLn $ "pBMU=" ++ show pBMU
@@ -105,7 +113,6 @@ trainOne (w, modelCreationData) obj = do
   -- putStrLn $ "predictor learning rate=" ++ show (currentLearningRate $ view (brain . predictor) w)
   -- putStrLn "Predictor models after"
   -- mapM_ putStrLn $ IW.describePredictorModels w'
-  let bmu = head . fst $ maximumBy (comparing snd) sps
   putStrLn $ objectId obj ++ "," ++ numeral : "," ++ show bmu
   let modelCreationData' = updateModelCreationData bmu numeral modelCreationData
   -- let originalNumeral = snd $ modelCreationData' ! bmu
@@ -117,13 +124,17 @@ trainOne (w, modelCreationData) obj = do
   -- mapM_ putStrLn $ IW.describePredictorModels w'
   return (w', modelCreationData')
 
-testOne :: AudioWain -> [(Numeral, Bool)] -> Object Action -> IO [(Numeral, Bool)]
+testOne
+  :: PatternWain -> [(Numeral, Bool)]
+    -> Object Action (ResponseTweaker Action)
+      -> IO [(Numeral, Bool)]
 testOne w testStats obj = do
   putStrLn $ "-----"
-  let (lds, sps, rplos, aos, r, wainAfterDecision)
+  let (ldss, _, _, _, r, _)
         = chooseAction [objectAppearance obj] w
-  describePredictorModels wainAfterDecision
-  let (cBMU, _):(cBMU2, _):_ = sortBy (comparing snd) . head $ lds
+  -- describePredictorModels wainAfterDecision
+  -- putStrLn $ "DEBUG ldss=" ++ show ldss
+  let (cBMU, _):(cBMU2, _):_ = sortBy (comparing snd) . head $ ldss
   let a = view action r
   putStrLn $ "Wain sees " ++ objectId obj ++ ", classifies it as "
     ++ show cBMU ++ " (alt. " ++ show cBMU2
@@ -132,15 +143,15 @@ testOne w testStats obj = do
   let numeral = head . show $ objectNum obj
   let answer = numeralFor a
   let wasCorrect = answer == numeral
-  mapM_ putStrLn $ scenarioReport sps
-  mapM_ putStrLn $ responseReport rplos
-  mapM_ putStrLn $ decisionReport aos
-  let novelty = minimum . map snd . head $ lds :: UIDouble
+  -- mapM_ putStrLn $ scenarioReport sps
+  -- mapM_ putStrLn $ responseReport rplos
+  -- mapM_ putStrLn $ decisionReport aos
+  let novelty = minimum . map snd . head $ ldss :: UIDouble
   putStrLn $ objectId obj ++ "," ++ numeral : "," ++ show answer
     ++ "," ++ show wasCorrect ++ "," ++ show novelty
   return $ (numeral, wasCorrect):testStats
 
-describePredictorModels :: AudioWain -> IO ()
+describePredictorModels :: PatternWain -> IO ()
 describePredictorModels w = mapM_ (putStrLn . f) ms
   where ms = M.toList . modelMap . view (brain . predictor) $ w
         f (l, r) = view name w ++ "'s predictor model " ++ show l ++ ": "
@@ -153,15 +164,17 @@ readDirAndShuffle d = do
   files <- map (d2 ++) . drop 2 <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
-readSamples :: Int -> FilePath -> IO [Object Action]
+readSamples
+  :: Int -> FilePath -> IO [Object Action (ResponseTweaker Action)]
 readSamples nvec dir = do
   files <- readDirAndShuffle dir
   mapM (readOneSample nvec) files
 
-readOneSample :: Int -> FilePath -> IO (Object Action)
+readOneSample
+  :: Int -> FilePath -> IO (Object Action (ResponseTweaker Action))
 readOneSample nvec f = do
   audio <- readAudio f nvec
-  return $ IObject audio (takeFileName f)
+  return $ PObject audio (takeFileName f)
 
 numeralStats :: [(Numeral, Bool)] -> [(String, Int, Int, Double)]
 numeralStats xs = ("all",total,totalCorrect,fraction):xs'

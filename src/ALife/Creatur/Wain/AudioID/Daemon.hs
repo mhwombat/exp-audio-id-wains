@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.AudioID.Daemon
--- Copyright   :  (c) Amy de Buitléir 2013-2015
+-- Copyright   :  (c) Amy de Buitléir 2013-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -17,7 +17,7 @@ module Main where
 import ALife.Creatur.Daemon (CreaturDaemon(..), Job(..),
   simpleDaemon, launch)
 import ALife.Creatur.Task (runInteractingAgents, simpleJob, doNothing)
-import ALife.Creatur.Wain.AudioID.Experiment (AudioWain, run, finishRound, versionInfo)
+import ALife.Creatur.Wain.AudioID.Experiment (PatternWain, run, finishRound, versionInfo)
 import ALife.Creatur.Wain.AudioID.Universe (Universe(..),
   writeToLog, loadUniverse, uStatsFile, uSleepBetweenTasks,
   uExperimentName)
@@ -32,11 +32,11 @@ shutdownMessagePrinted :: MVar Bool
 {-# NOINLINE shutdownMessagePrinted #-}
 shutdownMessagePrinted = unsafePerformIO (newMVar False)
 
-startupHandler :: String -> Universe AudioWain -> IO (Universe AudioWain)
+startupHandler :: String -> Universe PatternWain -> IO (Universe PatternWain)
 startupHandler programName
   = execStateT (writeToLog $ "Starting " ++ programName)
 
-shutdownHandler :: String -> Universe AudioWain -> IO ()
+shutdownHandler :: String -> Universe PatternWain -> IO ()
 shutdownHandler programName u = do
   -- Only print the message once
   handled <- readMVar shutdownMessagePrinted
@@ -46,7 +46,7 @@ shutdownHandler programName u = do
     _ <- swapMVar shutdownMessagePrinted True
     return ()
 
-endRoundProgram :: StateT (Universe AudioWain) IO ()
+endRoundProgram :: StateT (Universe PatternWain) IO ()
 endRoundProgram = use uStatsFile >>= finishRound
 
 main :: IO ()
