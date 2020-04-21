@@ -1,0 +1,15 @@
+Using noisy audio files
+-----------------------
+grep '"all"' ~/néal/exp-audio-id-wains/*.log resultsForPaper/singleWainAsIs.log | sed 's@resultsForPaper/singleWainAsIs.log:@superwain,clean@; s/.*-159-/superwain,/; s/-RAW.log://; s/("all",2541//; s/)//; 1i\method,source,correct,accuracy' > results.csv
+
+R
+d1 <- read.csv('~/TI46/summary.csv')
+d2 <- read.csv('results.csv')
+d <- rbind(d1,d2)
+require(ggplot2)
+sources <- c('clean','N1_SNR20','N1_SNR15','N1_SNR10','N1_SNR5','N1_SNR0','N1_SNR-5',
+            'N2_SNR20','N2_SNR15','N2_SNR10','N2_SNR5','N2_SNR0','N2_SNR-5',
+            'N3_SNR20','N3_SNR15','N3_SNR10','N3_SNR5','N3_SNR0','N3_SNR-5',
+            'N4_SNR20','N4_SNR15','N4_SNR10','N4_SNR5','N4_SNR0','N4_SNR-5')
+ggplot(d, aes(x=d$"source", y=d$"accuracy", colour=d$"method", group=d$"method")) + geom_line() +  scale_x_discrete(limits=sources)
+ggsave(file='accuracy.pdf', width=24, height=4);
