@@ -161,7 +161,7 @@ readDirAndShuffle :: FilePath -> IO [FilePath]
 readDirAndShuffle d = do
   let g = mkStdGen 263167 -- seed
   let d2 = d ++ "/"
-  files <- map (d2 ++) . drop 2 <$> getDirectoryContents d
+  files <- map (d2 ++) . filter (\s -> head s /= '.') <$> getDirectoryContents d
   return $ evalRand (shuffle files) g
 
 readSamples
@@ -230,6 +230,7 @@ main = do
   putStrLn "Testing"
   putStrLn "====="
   testSamples <- readSamples nvec testDir
+  putStrLn "filename,numeral,answer,correct,novelty,label,diff"
   stats2 <- foldM (testOne trainedWain) [] testSamples
   putStrLn ""
   putStrLn "====="

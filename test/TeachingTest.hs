@@ -153,6 +153,7 @@ numTests = 5
 main :: IO ()
 main = do
   putStrLn $ "numImprints=" ++ show numImprints
+  putStrLn $ "numTests=" ++ show numTests
   putStrLn $ "stats=" ++ show (stats testWain)
   imprintFiles <- take numImprints . drop 2 <$> readDirAndShuffle trainingDir
   imprintSamples <- mapM (readOneSample 110) imprintFiles
